@@ -1,0 +1,101 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Tareas Actuales</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/credits">Créditos</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Filtros -->
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-select label="Prioridad" labelPlacement="stacked" [(ngModel)]="filterPriority">
+        <ion-select-option value="all">Todas</ion-select-option>
+        <ion-select-option value="low">Baja</ion-select-option>
+        <ion-select-option value="medium">Media</ion-select-option>
+        <ion-select-option value="high">Alta</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-select label="Categoría" labelPlacement="stacked" [(ngModel)]="filterCategory">
+        <ion-select-option value="all">Todas</ion-select-option>
+        <ion-select-option *ngFor="let c of categories" [value]="c">{{ c }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-button size="small" (click)="clearFilters()">Limpiar filtros</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Lista de tareas filtrada -->
+  <ion-list [inset]="true">
+    <ion-item *ngFor="let task of filteredTasks">
+      <ion-label>
+        <h2>{{ task.name }}</h2>
+        <p *ngIf="task.description">{{ task.description }}</p>
+        <p *ngIf="task.priority || task.dueDate">
+          <span *ngIf="task.priority">Prioridad: {{ task.priority }}</span>
+          <span *ngIf="task.dueDate"> | Vence: {{ task.dueDate | date:'mediumDate' }}</span>
+        </p>
+        <p *ngIf="task.category">
+          <ion-badge color="tertiary">{{ task.category }}</ion-badge>
+        </p>
+      </ion-label>
+
+      <ion-checkbox slot="end" class="check" [checked]="task.completed" (ionChange)="completeTask(task.id)" labelPlacement="end"></ion-checkbox>
+
+      <ion-button slot="end" fill="clear" (click)="openEdit(task)">
+        <ion-icon name="pencil"></ion-icon>
+      </ion-button>
+
+      <ion-button slot="end" class="delete-button" (click)="deleteTask(task.id)" fill="clear">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <span [ngClass]="{'h-70vh': filteredTasks.length === 0}" *ngIf="filteredTasks.length === 0">No hay tareas</span>
+  </ion-list>
+
+  <ion-modal [isOpen]="isEditOpen" (didDismiss)="closeEdit()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar tarea</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list [inset]="true">
+          <ion-item>
+            <ion-input label="Nombre" labelPlacement="stacked" [(ngModel)]="editForm.name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Descripción" labelPlacement="stacked" [(ngModel)]="editForm.description"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="date" label="Fecha límite" labelPlacement="stacked" [(ngModel)]="editForm.dueDate"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-select label="Prioridad" labelPlacement="stacked" [(ngModel)]="editForm.priority">
+              <ion-select-option value="low">Baja</ion-select-option>
+              <ion-select-option value="medium">Media</ion-select-option>
+              <ion-select-option value="high">Alta</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Categoría" labelPlacement="stacked" [(ngModel)]="editForm.category"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeEdit()">Cancelar</ion-button>
+            <ion-button color="primary" (click)="saveEdit()">Guardar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+

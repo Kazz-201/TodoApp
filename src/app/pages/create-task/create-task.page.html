@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Agregar Tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/credits">Créditos</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="container_imput">
+  <ion-list>
+    <ion-item>
+      <ion-input [(ngModel)]="titleTask" placeholder="Nombre de la tarea"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="descriptionTask" placeholder="Descripción de la tarea"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="date" [(ngModel)]="dueDateTask" placeholder="Fecha límite"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select [(ngModel)]="categoryTask" interface="popover" placeholder="Categoría">
+        <ion-select-option *ngFor="let c of categories" [value]="c">{{ c }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-select [(ngModel)]="priorityTask" interface="popover" placeholder="Prioridad">
+        <ion-select-option value="low">Baja</ion-select-option>
+        <ion-select-option value="medium">Media</ion-select-option>
+        <ion-select-option value="high">Alta</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-button (click)="addTasksFunction()" color="success">Agregar</ion-button>
+</div>

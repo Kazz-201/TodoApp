@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Tareas Completadas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/credits">Créditos</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list [inset]="true">
+    <ion-item *ngFor="let task of tasksCompleted">
+      <ion-label class="complete">{{ task.name }}</ion-label>
+    </ion-item>
+    <span [ngClass]="{'h-70vh': tasksCompleted.length === 0}" *ngIf="tasksCompleted.length === 0">Aun no hay tareas completadas</span>
+
+  </ion-list> 
+</ion-content>
+

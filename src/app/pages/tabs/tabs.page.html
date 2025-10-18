@@ -1,0 +1,14 @@
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button
+      *ngFor="let page of AppPages"
+      [tab]="page.tab"
+      [routerLink]="page.url"
+      routerDirection="root">
+      <ion-icon [name]="page.icon"></ion-icon>
+      <ion-label>{{ page.title }}</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>
+
